@@ -6,7 +6,7 @@ import BannerTitle from "./banner.title";
 const Banner = () => {
   return (
     <section>
-      <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+      <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:px-12">
         <BannerTitle />
         <BannerActionBtn />
       </div>

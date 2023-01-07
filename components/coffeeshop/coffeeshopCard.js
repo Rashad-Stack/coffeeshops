@@ -12,6 +12,7 @@ const CoffeeShopCard = ({ title, description, uri, goto }) => {
           height={400}
           className="rounded-t-lg"
           alt={title}
+          preload="true"
         />
 
         <div className="p-5">

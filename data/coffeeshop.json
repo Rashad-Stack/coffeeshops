@@ -36,19 +36,12 @@
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/16/Caf%C3%A9Cortado%28Tallat%29.jpg",
     "id": 4
   },
-  {
-    "title": "Red Eye",
-    "description": "Named after those pesky midnight flights, a red eye can cure any tiresome morning. A full cup of hot coffee with an espresso shot mixed in, this will definitely get your heart racing.",
-    "ingredients": ["Coffee", "Espresso"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Linea_doubleespresso.jpg",
-    "id": 5
-  },
 
   {
     "title": "Macchiato",
     "description": "The macchiato is another espresso-based drink that has a small amount of foam on top. It’s the happy medium between a cappuccino and a doppio.",
     "ingredients": ["Espresso", "Foam"],
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/07/Caff%C3%A8_Espresso_Macchiato_Schiumato.jpg",
-    "id": 6
+    "id": 5
   }
 ]
