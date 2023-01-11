@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import coffeeshopsSlices from "./slices/coffeeshopSlices";
+import currentLocationSlices from "./slices/currentLocationSlices";
 
 const store = configureStore({
   reducer: {
-    coffeeshops: coffeeshopsSlices,
+    currentLocation: currentLocationSlices,
   },
 });
 

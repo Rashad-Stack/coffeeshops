@@ -1,14 +1,13 @@
-import Link from "next/link";
 import React from "react";
 import BannerActionBtn from "./banner.action.btn";
 import BannerTitle from "./banner.title";
 
-const Banner = () => {
+const Banner = ({ handleClick, loader }) => {
   return (
     <section>
       <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:px-12">
         <BannerTitle />
-        <BannerActionBtn />
+        <BannerActionBtn handleClick={handleClick} loader={loader} />
       </div>
     </section>
   );
