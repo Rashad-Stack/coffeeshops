@@ -86,19 +86,16 @@ const CoffeeShop = (initialProps) => {
   const handleUpVote = async () => {
     setErrors(null);
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/votecoffeeshopbyis",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: process.env.NEXT_PUBLIC_FOURSQUARE_API_KEY,
-          },
-          body: JSON.stringify({
-            id: route.query.id,
-          }),
-        }
-      );
+      const response = await fetch("/api/votecoffeeshopbyis", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.NEXT_PUBLIC_FOURSQUARE_API_KEY,
+        },
+        body: JSON.stringify({
+          id: route.query.id,
+        }),
+      });
 
       const dbCoffeeshop = await response.json();
       if (dbCoffeeshop.results && dbCoffeeshop.results.length !== 0) {
