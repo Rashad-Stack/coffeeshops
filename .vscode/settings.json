@@ -5,6 +5,7 @@
     "coffeeshop",
     "coffeeshops",
     "coffeeshopsairtable",
+    "getcoffeeshopbyid",
     "getcoffeeshopsbylocation",
     "latlng",
     "unsplash"

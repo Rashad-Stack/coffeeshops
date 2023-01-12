@@ -9,12 +9,6 @@ const airTableCoffeeshops = async (req, res) => {
   const { id, votes, name, address, neighborhood, image } = req.body;
   const uid = id || uuid().split("-").join().replaceAll(",");
   const records = await getMatchedRecords(uid);
-  console.log(
-    "🚀 ~ file: coffeeshopsairtable.js:12 ~ airTableCoffeeshops ~ records",
-    records,
-    records.length,
-    records.length > 0
-  );
 
   try {
     if (req.method === "POST") {

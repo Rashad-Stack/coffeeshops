@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import useSWR from "swr";
+
 import { createCoffeeShop } from "../../lib/airtable";
 import { fetchCoffeeshops } from "../../lib/coffeeshops";
 import { isEmpty } from "../../utils";
@@ -42,13 +44,20 @@ export const getStaticPaths = async () => {
 const CoffeeShop = (initialProps) => {
   const { coffeeshops } = useSelector((state) => state.currentLocation);
   const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeshop || {});
-  const [isLoading, seIsLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const [voting, setVoting] = useState(0);
   const route = useRouter();
 
-  useEffect(() => {
-    route.query.id && seIsLoading(true);
+  const { data, error, isLoading } = useSWR(
+    `/api/getcoffeeshopbyid?id=${route.query.id}`,
+    (url) =>
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => data.results)
+  );
 
-    if (isLoading) {
+  useEffect(() => {
+    if (!isLoading) {
       if (isEmpty(initialProps.coffeeshop)) {
         if (coffeeshops.length > 0) {
           const findCoffeeStoreById = coffeeshops.find((coffeeStore) => {
@@ -60,21 +69,50 @@ const CoffeeShop = (initialProps) => {
           }
         }
       } else {
-        console.log(initialProps.coffeeshop);
         createCoffeeShop(initialProps.coffeeshop);
       }
     }
-    console.log("loading false");
-  }, [coffeeshops, initialProps.coffeeshop, isLoading, route.query.id]);
+  }, [coffeeshops, initialProps.coffeeshop, route.query.id, isLoading]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (data && data.length > 0) {
+        setVoting(data[0].votes);
+        setCoffeeStore(data[0]);
+      }
+    }
+  }, [data, error, isLoading, route.query.id]);
+
+  const handleUpVote = async () => {
+    setErrors(null);
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/votecoffeeshopbyis",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: process.env.NEXT_PUBLIC_FOURSQUARE_API_KEY,
+          },
+          body: JSON.stringify({
+            id: route.query.id,
+          }),
+        }
+      );
+
+      const dbCoffeeshop = await response.json();
+      if (dbCoffeeshop.results && dbCoffeeshop.results.length !== 0) {
+        setVoting(dbCoffeeshop.results.votes + 1);
+      }
+    } catch (err) {
+      setErrors("Error voting", error.message);
+    }
+  };
 
   if (route.isFallback) {
     return <p>Loading...</p>;
   }
   const { name, location, image } = coffeeStore;
-
-  const handleUpVote = () => {
-    console.log("hi ther");
-  };
 
   // return false;
 
@@ -116,8 +154,11 @@ const CoffeeShop = (initialProps) => {
           <div className="flex flex-row md:flex-col gap-3 items-start">
             <div className="w-full group flex flex-col justify-between rounded-sm p-8 shadow-xl transition-shadow hover:shadow-lg">
               <div>
-                <h3 className="text-5xl font-bold text-	error-content">100+</h3>
+                <h3 className="text-5xl font-bold text-	error-content">
+                  {voting}+
+                </h3>
                 <div className="mt-4 border-t-2 border-indigo-100 pt-2">
+                  {errors && <h1 className="p-3 text-red-600">{errors}</h1>}
                   <p className="flex items-center gap-2 text-sm font-medium uppercase tracking-widest text-gray-500">
                     <Image
                       src="/static/icons/coffee.svg"
